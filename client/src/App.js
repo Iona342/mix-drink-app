@@ -1,24 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import PostForm from "./components/PostForm";
+import PostList from "./components/PostList";
+import Ranking from "./components/Ranking";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <h1>Mix Drink SNS</h1>
+        <nav>
+          <Link to="/form">投稿フォーム</Link> | <Link to="/posts">投稿一覧</Link> | <Link to="/ranking">ランキング</Link>
+        </nav>
+        <Routes>
+          <Route path="/form" element={<PostForm />} />
+          <Route path="/posts" element={<PostList />} />
+          <Route path="/ranking" element={<Ranking />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
