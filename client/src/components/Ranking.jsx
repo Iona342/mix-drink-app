@@ -12,12 +12,12 @@ export default function PostList() {
       setPosts(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
     });
 
-    return () => unsubscribe(); // コンポーネントがアンマウントされたら購読解除
+    return () => unsubscribe(); 
   }, []);
 
   return (
     <div>
-      <h2>投稿一覧</h2>
+      <h2>ランキングここに作って</h2>
       {posts.map((post) => (
         <div key={post.id}>{post.text}</div>
       ))}
