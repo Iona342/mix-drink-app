@@ -12,7 +12,7 @@ export default function PostList() {
       setPosts(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
     });
 
-    return () => unsubscribe(); // コンポーネントがアンマウントされたら購読解除
+    return () => unsubscribe();
   }, []);
 
   return (
