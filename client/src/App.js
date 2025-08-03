@@ -3,20 +3,30 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import PostForm from "./components/PostForm";
 import PostList from "./components/PostList";
 import Ranking from "./components/Ranking";
+import TopPage from "./components/TopPage";
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <h1>Mix Drink SNS</h1>
-        <nav>
-          <Link to="/form">投稿フォーム</Link> | <Link to="/posts">投稿一覧</Link> | <Link to="/ranking">ランキング</Link>
-        </nav>
-        <Routes>
-          <Route path="/form" element={<PostForm />} />
-          <Route path="/posts" element={<PostList />} />
-          <Route path="/ranking" element={<Ranking />} />
-        </Routes>
+        <header className="App-header-fixed">
+          <h1>Mix Drink SNS</h1>
+          <nav>
+            <Link to="/">トップページ</Link> |
+            <Link to="/form">投稿フォーム</Link> |
+            <Link to="/posts">投稿一覧</Link> |
+            <Link to="/ranking">ランキング</Link>
+          </nav>
+        </header>
+
+        <div className="main-content">
+          <Routes>
+            <Route path="/" element={<TopPage />} />
+            <Route path="/form" element={<PostForm />} />
+            <Route path="/posts" element={<PostList />} />
+            <Route path="/ranking" element={<Ranking />} />
+          </Routes>
+        </div>
       </div>
     </Router>
   );
