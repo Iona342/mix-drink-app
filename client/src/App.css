@@ -1,5 +1,25 @@
+.App-header-fixed {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  background-color: #181818; 
+  color: oklab(100% 0 -0.00011); 
+  height: 60px;
+  padding: 10px 0;
+  z-index: 1000;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.main-content {
+  padding-top: 90px;
+  background-color: transparent;
+}
 .App {
   text-align: center;
+  background-color: transparent;
 }
 
 .App-logo {
