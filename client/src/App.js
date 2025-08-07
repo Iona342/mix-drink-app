@@ -4,6 +4,7 @@ import PostForm from "./components/PostForm";
 import PostList from "./components/PostList";
 import Ranking from "./components/Ranking";
 import TopPage from "./components/TopPage";
+import SearchForm  from "./components/SearchForm";
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
             <Link to="/">トップページ</Link> |
             <Link to="/form">投稿フォーム</Link> |
             <Link to="/posts">投稿一覧</Link> |
-            <Link to="/ranking">ランキング</Link>
+            <Link to="/ranking">ランキング</Link> |
+            <Link to="/search">検索</Link>
           </nav>
         </header>
 
@@ -25,6 +27,7 @@ function App() {
             <Route path="/form" element={<PostForm />} />
             <Route path="/posts" element={<PostList />} />
             <Route path="/ranking" element={<Ranking />} />
+            <Route path="/search" element={<SearchForm />} />
           </Routes>
         </div>
       </div>

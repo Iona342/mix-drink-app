@@ -1,0 +1,70 @@
+.search-form {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.drink-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.drink-buttons button {
+  padding: 10px;
+  border: 2px solid #ddd;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.drink-buttons button:hover {
+  background-color: #e9e9e9;
+}
+
+.drink-buttons button.selected {
+  background-color: #4CAF50;
+  color: white;
+  border-color: #45a049;
+}
+
+form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+form input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+form button {
+  padding: 10px 20px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #1976D2;
+}
+
+.search-results {
+  margin-top: 20px;
+}
+
+.post-item {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
