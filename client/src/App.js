@@ -4,8 +4,21 @@ import PostForm from "./components/PostForm";
 import PostList from "./components/PostList";
 import Ranking from "./components/Ranking";
 import TopPage from "./components/TopPage";
+import MyPost from "./components/MyPost";
+
+function generateUserId() {
+  return "user_" + Math.random().toString(36).substring(2, 15);
+}
 
 function App() {
+  React.useEffect(() => {
+    if (!localStorage.getItem("userId")) {
+      const newId = generateUserId();
+      localStorage.setItem("userId", newId);
+      console.log("新しいuserIdを保存:", newId);
+    }
+  }, []);
+
   return (
     <Router>
       <div className="App">
@@ -15,7 +28,8 @@ function App() {
             <Link to="/">トップページ</Link> |
             <Link to="/form">投稿フォーム</Link> |
             <Link to="/posts">投稿一覧</Link> |
-            <Link to="/ranking">ランキング</Link>
+            <Link to="/ranking">ランキング</Link> |
+            <Link to="/mypost">マイ投稿</Link>
           </nav>
         </header>
 
@@ -25,6 +39,7 @@ function App() {
             <Route path="/form" element={<PostForm />} />
             <Route path="/posts" element={<PostList />} />
             <Route path="/ranking" element={<Ranking />} />
+            <Route path="/mypost" element={<MyPost />} />
           </Routes>
         </div>
       </div>
