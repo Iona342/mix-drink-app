@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { db,auth } from "../firebase";
+import { db } from "../firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 export default function PostForm() {
@@ -8,9 +8,12 @@ export default function PostForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const userId = localStorage.getItem("userId");
+
     await addDoc(collection(db, "posts"), {
       text: drink,
       createdAt: serverTimestamp(),
+      userId: userId,
     });
 
     setDrink("");
