@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { db, auth } from "../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
-
+import "./SearchForm.css"; // スタイルシートのインポート
 export default function SearchForm({ onSearchResults }) {
   const [selectedDrinks, setSelectedDrinks] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
@@ -101,4 +101,3 @@ export default function SearchForm({ onSearchResults }) {
     </div>
   );
 }
-import "./SearchForm.css"; // スタイルシートのインポート
