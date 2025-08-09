@@ -49,19 +49,32 @@ export default function SearchForm({ onSearchResults }) {
       const postsRef = collection(db, "posts");
       const results = [];
 
-      // 各選択されたドリンクで検索
-      for (const drink of selectedDrinks) {
-        const q = query(postsRef, where("text", "array-contains", drink));
+      if (selectedDrinks.length === 1) {
+        // 1つのドリンクの場合は通常の検索
+        const q = query(postsRef, where("text", "array-contains", selectedDrinks[0]));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
+          results.push({ id: doc.id, ...doc.data() });
+        });
+      } else {
+        // 複数のドリンクの場合は積集合（AND検索）
+        // まず最初のドリンクで検索
+        const q = query(postsRef, where("text", "array-contains", selectedDrinks[0]));
+        const querySnapshot = await getDocs(q);
+        
+        querySnapshot.forEach((doc) => {
           const postData = { id: doc.id, ...doc.data() };
-          // 重複を避けるため、IDでチェック
-          if (!results.find((post) => post.id === postData.id)) {
+          
+          // 選択されたすべてのドリンクが含まれているかチェック
+          const hasAllDrinks = selectedDrinks.every(drink => 
+            postData.text && postData.text.includes(drink)
+          );
+          if (hasAllDrinks) {
             results.push(postData);
           }
         });
       }
-
+      
       setSearchResults(results);
       if (onSearchResults) {
         onSearchResults(results);
