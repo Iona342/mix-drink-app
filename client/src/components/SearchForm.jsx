@@ -22,6 +22,14 @@ export default function SearchForm({ onSearchResults }) {
     "カルピスソーダ",
     "ウーロン茶",
     "爽健美茶",
+    "紅茶",
+    "青汁",
+    "アイスコーヒー",
+    "カフェモカ",
+    "カフェラテ",
+    "ココア",
+    "キャラメルマキアート",
+    "抹茶ラテ",
     "ソフトクリーム",
   ];
 
@@ -43,7 +51,7 @@ export default function SearchForm({ onSearchResults }) {
 
       // 各選択されたドリンクで検索
       for (const drink of selectedDrinks) {
-        const q = query(postsRef, where("drinks", "array-contains", drink));
+        const q = query(postsRef, where("text", "array-contains", drink));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
           const postData = { id: doc.id, ...doc.data() };
@@ -93,8 +101,16 @@ export default function SearchForm({ onSearchResults }) {
       <div className="search-results">
         {searchResults.map((post) => (
           <div key={post.id} className="post-item">
-            <h3>{post.title}</h3>
-            <p>使用ドリンク: {post.drinks?.join(", ")}</p>
+            <h3>使用ドリンク: {post.text?.join(", ")}</h3>
+            {post.imageUrl && (
+              <img 
+                src={post.imageUrl} 
+                alt="ドリンク画像" 
+                style={{ maxWidth: "200px", height: "auto" }}
+              />
+            )}
+            <p>感想: {post.comment}</p>
+            <small>投稿日: {post.createdAt?.toDate().toLocaleString()}</small>
           </div>
         ))}
       </div>
