@@ -22,7 +22,22 @@ export default function TopPage() {
       <hr />
       <h2>最近の投稿</h2>
       {posts.map((post) => (
-        <div key={post.id}>{post.text}</div>
+        <div key={post.id} style={{ border: "1px solid #ccc", margin: "10px 0", padding: "10px" }}>
+          <div>
+            <strong>選んだドリンク:</strong>
+            {Array.isArray(post.text)
+              ? post.text.join(" ＋ ")
+              : post.text}
+          </div>
+          <div>
+            <strong>感想:</strong> {post.comment}
+          </div>
+          {post.imageUrl && (
+            <div>
+              <img src={post.imageUrl} alt="投稿画像" style={{ maxWidth: "200px" }} />
+            </div>
+          )}
+        </div>
       ))}
     </div>
   );
