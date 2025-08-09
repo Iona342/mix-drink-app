@@ -58,6 +58,7 @@ export default function MyPost() {
               {post.likes || 0}{" "}
               <FontAwesomeIcon
                 icon={faThumbsDown}
+
               />{" "}
               {post.bads || 0}
             </div>
