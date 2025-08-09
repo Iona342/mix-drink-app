@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import PostForm from "./components/PostForm";
-import PostList from "./components/PostList";
 import Ranking from "./components/Ranking";
 import TopPage from "./components/TopPage";
 import MyPost from "./components/MyPost";
@@ -27,7 +26,6 @@ function App() {
           <nav>
             <Link to="/">トップページ</Link> |
             <Link to="/form">投稿フォーム</Link> |
-            <Link to="/posts">投稿一覧</Link> |
             <Link to="/ranking">ランキング</Link> |
             <Link to="/mypost">マイ投稿</Link>
           </nav>
@@ -37,7 +35,6 @@ function App() {
           <Routes>
             <Route path="/" element={<TopPage />} />
             <Route path="/form" element={<PostForm />} />
-            <Route path="/posts" element={<PostList />} />
             <Route path="/ranking" element={<Ranking />} />
             <Route path="/mypost" element={<MyPost />} />
           </Routes>
