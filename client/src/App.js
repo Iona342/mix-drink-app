@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import PostForm from "./components/PostForm";
 import Ranking from "./components/Ranking";
 import TopPage from "./components/TopPage";
-import SearchForm  from "./components/SearchForm";
+import SearchForm from "./components/SearchForm";
 import MyPost from "./components/MyPost";
+import "./App.css";
 
 function generateUserId() {
   return "user_" + Math.random().toString(36).substring(2, 15);
@@ -23,12 +24,12 @@ function App() {
     <Router>
       <div className="App">
         <header className="App-header-fixed">
-          <h1>Mix Drink SNS</h1>
+          <h1>Drink Master</h1>
           <nav>
-            <Link to="/">トップページ</Link> |
-            <Link to="/form">投稿フォーム</Link> |
-            <Link to="/ranking">ランキング</Link> |
-            <Link to="/search">検索</Link> |
+            <Link to="/">トップページ</Link>
+            <Link to="/form">投稿フォーム</Link>
+            <Link to="/ranking">ランキング</Link>
+            <Link to="/search">検索</Link>
             <Link to="/mypost">マイ投稿</Link>
           </nav>
         </header>
