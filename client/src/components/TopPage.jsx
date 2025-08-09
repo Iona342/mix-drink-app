@@ -9,13 +9,18 @@ import {
   updateDoc,
   increment,
 } from "firebase/firestore";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbsDown } from "@fortawesome/free-solid-svg-icons";
+import { faThumbsDown as farThumbsDown } from "@fortawesome/free-regular-svg-icons";
 
 export default function TopPage() {
   const [posts, setPosts] = useState([]);
-  const [likedPosts, setLikedPosts] = useState(() => {
-    // 初期値はローカルストレージから取得
-    return JSON.parse(localStorage.getItem("likedPosts") || "[]");
-  });
+  const [likedPosts, setLikedPosts] = useState(() =>
+    JSON.parse(localStorage.getItem("likedPosts") || "[]")
+  );
+  const [badPosts, setBadPosts] = useState(() =>
+    JSON.parse(localStorage.getItem("badPosts") || "[]")
+  );
 
   useEffect(() => {
     const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
@@ -29,10 +34,11 @@ export default function TopPage() {
   const handleLikeToggle = async (postId) => {
     const postRef = doc(db, "posts", postId);
     const hasLiked = likedPosts.includes(postId);
+    const hasBad = badPosts.includes(postId);
 
     try {
       if (hasLiked) {
-        // いいね取り消し
+        // いいね解除
         await updateDoc(postRef, {
           likes: increment(-1),
         });
@@ -40,12 +46,20 @@ export default function TopPage() {
         setLikedPosts(newLikedPosts);
         localStorage.setItem("likedPosts", JSON.stringify(newLikedPosts));
       } else {
-        // いいね
+        // いいね → BADが押されてたら解除する
         await updateDoc(postRef, {
           likes: increment(1),
+          bads: hasBad ? increment(-1) : increment(0),
         });
         const newLikedPosts = [...likedPosts, postId];
         setLikedPosts(newLikedPosts);
+
+        if (hasBad) {
+          const newBadPosts = badPosts.filter((id) => id !== postId);
+          setBadPosts(newBadPosts);
+          localStorage.setItem("badPosts", JSON.stringify(newBadPosts));
+        }
+
         localStorage.setItem("likedPosts", JSON.stringify(newLikedPosts));
       }
     } catch (error) {
@@ -53,16 +67,48 @@ export default function TopPage() {
     }
   };
 
+  const handleBadToggle = async (postId) => {
+    const postRef = doc(db, "posts", postId);
+    const hasBad = badPosts.includes(postId);
+    const hasLiked = likedPosts.includes(postId);
+
+    try {
+      if (hasBad) {
+        // BAD解除
+        await updateDoc(postRef, {
+          bads: increment(-1),
+        });
+        const newBadPosts = badPosts.filter((id) => id !== postId);
+        setBadPosts(newBadPosts);
+        localStorage.setItem("badPosts", JSON.stringify(newBadPosts));
+      } else {
+        // BAD → いいねが押されてたら解除する
+        await updateDoc(postRef, {
+          bads: increment(1),
+          likes: hasLiked ? increment(-1) : increment(0),
+        });
+        const newBadPosts = [...badPosts, postId];
+        setBadPosts(newBadPosts);
+
+        if (hasLiked) {
+          const newLikedPosts = likedPosts.filter((id) => id !== postId);
+          setLikedPosts(newLikedPosts);
+          localStorage.setItem("likedPosts", JSON.stringify(newLikedPosts));
+        }
+
+        localStorage.setItem("badPosts", JSON.stringify(newBadPosts));
+      }
+    } catch (error) {
+      console.error("BAD更新エラー:", error);
+    }
+  };
+
   return (
     <div>
-      <h2>Mix Drink SNS へようこそ！</h2>
-      <p>
-        ここでは、MIXしたドリンクを投稿したり、他の人の投稿を閲覧したりできます。
-      </p>
-      <hr />
       <h2>最近の投稿</h2>
       {posts.map((post) => {
         const hasLiked = likedPosts.includes(post.id);
+        const hasBad = badPosts.includes(post.id);
 
         return (
           <div
@@ -74,7 +120,7 @@ export default function TopPage() {
             }}
           >
             <div>
-              <strong>選んだドリンク:</strong>
+              <strong>選んだドリンク:</strong>{" "}
               {Array.isArray(post.text) ? post.text.join(" ＋ ") : post.text}
             </div>
             <div>
@@ -93,7 +139,24 @@ export default function TopPage() {
               <button onClick={() => handleLikeToggle(post.id)}>
                 {hasLiked ? "❤" : "♡"}
               </button>
-              <span style={{ marginLeft: "8px" }}>{post.likes || 0}</span>
+              <span style={{ marginLeft: "8px", marginRight: "16px" }}>
+                {post.likes || 0}
+              </span>
+
+              <button onClick={() => handleBadToggle(post.id)}>
+                {hasBad ? (
+                  <FontAwesomeIcon
+                    icon={faThumbsDown}
+                    style={{ color: "black" }}
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={farThumbsDown}
+                    style={{ color: "black" }}
+                  />
+                )}
+              </button>
+              <span style={{ marginLeft: "8px" }}>{post.bads || 0}</span>
             </div>
           </div>
         );
