@@ -55,11 +55,6 @@ export default function TopPage() {
 
   return (
     <div>
-      <h2>Mix Drink SNS へようこそ！</h2>
-      <p>
-        ここでは、MIXしたドリンクを投稿したり、他の人の投稿を閲覧したりできます。
-      </p>
-      <hr />
       <h2>最近の投稿</h2>
       {posts.map((post) => {
         const hasLiked = likedPosts.includes(post.id);

@@ -55,4 +55,18 @@
   to {
     transform: rotate(360deg);
   }
+}.App-header-fixed nav {
+  display: flex;
+  gap: 20px;
+}
+.App-header-fixed a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 5px 10px;
+}
+
+.App-header-fixed a:hover {
+  background-color: #333;
+  border-radius: 5px;
 }
