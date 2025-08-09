@@ -9,12 +9,18 @@ import {
   updateDoc,
   increment,
 } from "firebase/firestore";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbsDown } from "@fortawesome/free-solid-svg-icons";
+import { faThumbsDown as farThumbsDown } from "@fortawesome/free-regular-svg-icons";
+
 
 export default function TopPage() {
   const [posts, setPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState(() => {
-    // 初期値はローカルストレージから取得
     return JSON.parse(localStorage.getItem("likedPosts") || "[]");
+  });
+  const [badPosts, setBadPosts] = useState(() => {
+    return JSON.parse(localStorage.getItem("badPosts") || "[]");
   });
 
   useEffect(() => {
@@ -53,6 +59,33 @@ export default function TopPage() {
     }
   };
 
+  const handleBadToggle = async (postId) => {
+    const postRef = doc(db, "posts", postId);
+    const hasBad = badPosts.includes(postId);
+
+    try {
+      if (hasBad) {
+        // BAD取り消し
+        await updateDoc(postRef, {
+          bads: increment(-1),
+        });
+        const newBadPosts = badPosts.filter((id) => id !== postId);
+        setBadPosts(newBadPosts);
+        localStorage.setItem("badPosts", JSON.stringify(newBadPosts));
+      } else {
+        // BAD
+        await updateDoc(postRef, {
+          bads: increment(1),
+        });
+        const newBadPosts = [...badPosts, postId];
+        setBadPosts(newBadPosts);
+        localStorage.setItem("badPosts", JSON.stringify(newBadPosts));
+      }
+    } catch (error) {
+      console.error("BAD更新エラー:", error);
+    }
+  };
+
   return (
     <div>
       <h2>Mix Drink SNS へようこそ！</h2>
@@ -63,6 +96,7 @@ export default function TopPage() {
       <h2>最近の投稿</h2>
       {posts.map((post) => {
         const hasLiked = likedPosts.includes(post.id);
+        const hasBad = badPosts.includes(post.id);
 
         return (
           <div
@@ -93,7 +127,24 @@ export default function TopPage() {
               <button onClick={() => handleLikeToggle(post.id)}>
                 {hasLiked ? "❤" : "♡"}
               </button>
-              <span style={{ marginLeft: "8px" }}>{post.likes || 0}</span>
+              <span style={{ marginLeft: "8px", marginRight: "16px" }}>
+                {post.likes || 0}
+              </span>
+
+              <button onClick={() => handleBadToggle(post.id)}>
+                {hasBad ? (
+                  <FontAwesomeIcon
+                    icon={faThumbsDown}
+                    style={{ color: "black" }}
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={farThumbsDown}
+                    style={{ color: "black" }}
+                  />
+                )}
+              </button>
+              <span style={{ marginLeft: "8px" }}>{post.bads || 0}</span>
             </div>
           </div>
         );

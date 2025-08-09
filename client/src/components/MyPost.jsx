@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { db } from "../firebase"; // firebase設定ファイル
+import { db } from "../firebase";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
 
 export default function MyPost() {
   const [myPosts, setMyPosts] = useState([]);
@@ -19,7 +21,7 @@ export default function MyPost() {
             id: doc.id,
             ...doc.data(),
           }))
-          .filter((post) => post.userId === userId); // 自分の投稿だけ
+          .filter((post) => post.userId === userId);
 
         setMyPosts(postsData);
       } catch (error) {
@@ -51,9 +53,14 @@ export default function MyPost() {
             <p>
               <strong>感想:</strong> {post.comment || "なし"}
             </p>
-            <p>
-              <strong>♡</strong> {post.likes || 0}
-            </p>
+            <div>
+              ♡{" "}
+              {post.likes || 0}{" "}
+              <FontAwesomeIcon
+                icon={faThumbsDown}
+              />{" "}
+              {post.bads || 0}
+            </div>
           </div>
         ))
       )}
