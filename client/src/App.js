@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import PostForm from "./components/PostForm";
 import Ranking from "./components/Ranking";
 import TopPage from "./components/TopPage";
+import SearchForm  from "./components/SearchForm";
 import MyPost from "./components/MyPost";
 
 function generateUserId() {
@@ -27,6 +28,7 @@ function App() {
             <Link to="/">トップページ</Link> |
             <Link to="/form">投稿フォーム</Link> |
             <Link to="/ranking">ランキング</Link> |
+            <Link to="/search">検索</Link> |
             <Link to="/mypost">マイ投稿</Link>
           </nav>
         </header>
@@ -36,6 +38,7 @@ function App() {
             <Route path="/" element={<TopPage />} />
             <Route path="/form" element={<PostForm />} />
             <Route path="/ranking" element={<Ranking />} />
+            <Route path="/search" element={<SearchForm />} />
             <Route path="/mypost" element={<MyPost />} />
           </Routes>
         </div>
