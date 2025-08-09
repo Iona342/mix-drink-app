@@ -13,15 +13,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsDown } from "@fortawesome/free-solid-svg-icons";
 import { faThumbsDown as farThumbsDown } from "@fortawesome/free-regular-svg-icons";
 
-
 export default function TopPage() {
   const [posts, setPosts] = useState([]);
-  const [likedPosts, setLikedPosts] = useState(() => {
-    return JSON.parse(localStorage.getItem("likedPosts") || "[]");
-  });
-  const [badPosts, setBadPosts] = useState(() => {
-    return JSON.parse(localStorage.getItem("badPosts") || "[]");
-  });
+  const [likedPosts, setLikedPosts] = useState(() =>
+    JSON.parse(localStorage.getItem("likedPosts") || "[]")
+  );
+  const [badPosts, setBadPosts] = useState(() =>
+    JSON.parse(localStorage.getItem("badPosts") || "[]")
+  );
 
   useEffect(() => {
     const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
@@ -35,10 +34,11 @@ export default function TopPage() {
   const handleLikeToggle = async (postId) => {
     const postRef = doc(db, "posts", postId);
     const hasLiked = likedPosts.includes(postId);
+    const hasBad = badPosts.includes(postId);
 
     try {
       if (hasLiked) {
-        // いいね取り消し
+        // いいね解除
         await updateDoc(postRef, {
           likes: increment(-1),
         });
@@ -46,12 +46,20 @@ export default function TopPage() {
         setLikedPosts(newLikedPosts);
         localStorage.setItem("likedPosts", JSON.stringify(newLikedPosts));
       } else {
-        // いいね
+        // いいね → BADが押されてたら解除する
         await updateDoc(postRef, {
           likes: increment(1),
+          bads: hasBad ? increment(-1) : increment(0),
         });
         const newLikedPosts = [...likedPosts, postId];
         setLikedPosts(newLikedPosts);
+
+        if (hasBad) {
+          const newBadPosts = badPosts.filter((id) => id !== postId);
+          setBadPosts(newBadPosts);
+          localStorage.setItem("badPosts", JSON.stringify(newBadPosts));
+        }
+
         localStorage.setItem("likedPosts", JSON.stringify(newLikedPosts));
       }
     } catch (error) {
@@ -62,10 +70,11 @@ export default function TopPage() {
   const handleBadToggle = async (postId) => {
     const postRef = doc(db, "posts", postId);
     const hasBad = badPosts.includes(postId);
+    const hasLiked = likedPosts.includes(postId);
 
     try {
       if (hasBad) {
-        // BAD取り消し
+        // BAD解除
         await updateDoc(postRef, {
           bads: increment(-1),
         });
@@ -73,12 +82,20 @@ export default function TopPage() {
         setBadPosts(newBadPosts);
         localStorage.setItem("badPosts", JSON.stringify(newBadPosts));
       } else {
-        // BAD
+        // BAD → いいねが押されてたら解除する
         await updateDoc(postRef, {
           bads: increment(1),
+          likes: hasLiked ? increment(-1) : increment(0),
         });
         const newBadPosts = [...badPosts, postId];
         setBadPosts(newBadPosts);
+
+        if (hasLiked) {
+          const newLikedPosts = likedPosts.filter((id) => id !== postId);
+          setLikedPosts(newLikedPosts);
+          localStorage.setItem("likedPosts", JSON.stringify(newLikedPosts));
+        }
+
         localStorage.setItem("badPosts", JSON.stringify(newBadPosts));
       }
     } catch (error) {
@@ -108,7 +125,7 @@ export default function TopPage() {
             }}
           >
             <div>
-              <strong>選んだドリンク:</strong>
+              <strong>選んだドリンク:</strong>{" "}
               {Array.isArray(post.text) ? post.text.join(" ＋ ") : post.text}
             </div>
             <div>
