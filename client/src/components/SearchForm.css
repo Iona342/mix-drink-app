@@ -1,6 +1,6 @@
 .search-form {
-  padding: 20px;
-  max-width: 800px;
+  padding: 10px;
+  max-width: 80%;
   margin: 0 auto;
 }
 
@@ -60,6 +60,9 @@ form button:hover {
 
 .search-results {
   margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
 }
 
 .post-item {
