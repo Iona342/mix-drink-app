@@ -1,53 +1,62 @@
 import React, { useEffect, useState } from "react";
-import { db } from "../firebase";
-import {
-  collection,
-  query,
-  orderBy,
-  onSnapshot,
-  deleteDoc,
-  doc,
-} from "firebase/firestore";
+import { db } from "../firebase"; // firebase設定ファイル
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
 
 export default function MyPost() {
-  const [posts, setPosts] = useState([]);
+  const [myPosts, setMyPosts] = useState([]);
 
   useEffect(() => {
-    const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
+    const fetchMyPosts = async () => {
       const userId = localStorage.getItem("userId");
-      const myPosts = snapshot.docs
-        .map((doc) => ({ id: doc.id, ...doc.data() }))
-        .filter((post) => post.userId === userId);
+      if (!userId) return;
 
-      setPosts(myPosts);
-    });
+      try {
+        const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+        const querySnapshot = await getDocs(q);
 
-    return () => unsubscribe();
+        const postsData = querySnapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+          .filter((post) => post.userId === userId); // 自分の投稿だけ
+
+        setMyPosts(postsData);
+      } catch (error) {
+        console.error("データ取得エラー:", error);
+      }
+    };
+
+    fetchMyPosts();
   }, []);
-
-  // 🔻 削除処理関数
-  const handleDelete = async (id) => {
-    const confirmDelete = window.confirm("この投稿を削除しますか？");
-    if (!confirmDelete) return;
-
-    try {
-      await deleteDoc(doc(db, "posts", id));
-    } catch (error) {
-      console.error("削除に失敗しました:", error);
-    }
-  };
 
   return (
     <div>
-      <h2>マイ投稿</h2>
-      {posts.map((post) => (
-        <div key={post.id} style={{ marginBottom: "1rem" }}>
-          <div>{post.text}</div>
-          {/* 🔻 削除ボタンを投稿ごとに表示 */}
-          <button onClick={() => handleDelete(post.id)}>削除</button>
-        </div>
-      ))}
+      <h2>自分の投稿一覧</h2>
+      {myPosts.length === 0 ? (
+        <p>まだ投稿がありません。</p>
+      ) : (
+        myPosts.map((post) => (
+          <div
+            key={post.id}
+            style={{
+              border: "1px solid #ccc",
+              padding: "10px",
+              marginBottom: "10px",
+            }}
+          >
+            <p>
+              <strong>選んだドリンク:</strong> {post.text}
+            </p>
+            <p>
+              <strong>感想:</strong> {post.comment || "なし"}
+            </p>
+            <p>
+              <strong>♡</strong> {post.likes || 0}
+            </p>
+          </div>
+        ))
+      )}
     </div>
   );
 }
