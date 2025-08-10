@@ -13,6 +13,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsDown } from "@fortawesome/free-solid-svg-icons";
 import { faThumbsDown as farThumbsDown } from "@fortawesome/free-regular-svg-icons";
 import "./SearchForm.css"; // スタイルシートのインポート
+import { faThumbsUp as fasThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import { faThumbsUp as farThumbsUp } from "@fortawesome/free-regular-svg-icons";
 
 export default function SearchForm({ onSearchResults }) {
   const [selectedDrinks, setSelectedDrinks] = useState([]);
@@ -229,18 +231,26 @@ export default function SearchForm({ onSearchResults }) {
               <small>投稿日: {post.createdAt?.toDate().toLocaleString()}</small>
 
               <div style={{ marginTop: "8px" }}>
-                <button onClick={() => handleLikeToggle(post.id)}>
-                  {hasLiked ? "❤" : "♡"}
+                <button
+                  className="like-btn"
+                  onClick={() => handleLikeToggle(post.id)}>
+                  {hasLiked ? (
+                                    <FontAwesomeIcon icon={fasThumbsUp} className="good-push"/>
+                                  ) : (
+                                    <FontAwesomeIcon icon={farThumbsUp} />
+                                  )}
                 </button>
                 <span style={{ marginLeft: "8px", marginRight: "16px" }}>
                   {post.likes || 0}
                 </span>
 
-                <button onClick={() => handleBadToggle(post.id)}>
+                <button
+                  className="bad-btn"
+                  onClick={() => handleBadToggle(post.id)}>
                   {hasBad ? (
                     <FontAwesomeIcon
                       icon={faThumbsDown}
-                      style={{ color: "black" }}
+                      className="bad-push"
                     />
                   ) : (
                     <FontAwesomeIcon

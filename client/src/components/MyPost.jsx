@@ -76,12 +76,24 @@ export default function MyPost() {
                     : post.text}
                 </div>
                 <div>
+                  {post.imageUrl && (
+                    <img
+                      src={post.imageUrl}
+                      alt="ドリンク画像"
+                      style={{ maxWidth: "200px", height: "auto" }}
+                    />
+                  )}
+                </div>
+                <div>
                   <strong>感想:</strong> {post.comment}
                 </div>
                 <div>
                   ♥ {post.likes || 0} <FontAwesomeIcon icon={faThumbsDown} />{" "}
                   {post.bads || 0}
                 </div>
+                <small>
+                  投稿日: {post.createdAt?.toDate().toLocaleString()}
+                </small>
               </div>
             </div>
           ))}
