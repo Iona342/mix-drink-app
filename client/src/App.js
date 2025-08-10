@@ -30,7 +30,7 @@ function App() {
             <Link to="/form">投稿フォーム</Link>
             <Link to="/ranking">ランキング</Link>
             <Link to="/search">検索</Link>
-            <Link to="/mypost">マイ投稿</Link>
+            <Link to="/mypost">あなたの投稿</Link>
           </nav>
         </header>
 

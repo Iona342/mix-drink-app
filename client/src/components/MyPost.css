@@ -1,0 +1,57 @@
+.results {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.post-item {
+  position: relative; /* ボタンを右上に配置するために必要 */
+  display: block;
+  justify-content: center; /* 1つ目の要素を中央寄せ */
+  align-items: center;
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  margin-left: 20px;
+  margin-right: 20px;
+  overflow: hidden;
+}
+
+.post-item .delete-btn {
+  position: absolute;
+  top: 5px;   /* 上からの距離 */
+  right: 5px; /* 右からの距離 */
+  background-color: white;   /* 赤色系 */
+  color: #ff4d4f;               /* 白文字 */
+  border-color: #ff4d4f;               /* 枠線なし */
+  padding: 6px 10px;           /* ちょっと小さめ */
+  border-radius: 10%;          /* 丸ボタンに */
+  font-size: 14px;             /* アイコンや文字が見やすいサイズ */
+  cursor: pointer;             /* ホバーで手の形 */
+  transition: background-color 0.2s ease; /* ホバーアニメーション */
+}
+.delete-btn:hover {
+  background-color: #ddd;   /* ホバー時は少し濃く */
+}
+
+.delete-btn:active {
+  background-color: #ddd;   /* クリック時はさらに濃く */
+}
+
+.post-drink {
+    margin-right: 65px;
+    font-size: 18px;
+}
+
+.none-post {
+  text-align: center;
+    font-size: 40px;
+    font-style: bold;
+}
+
+.your-post{
+    font-size: 35px;
+}
