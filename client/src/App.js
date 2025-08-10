@@ -24,7 +24,7 @@ function App() {
     <Router>
       <div className="App">
         <header className="App-header-fixed">
-          <h1>Drink Master</h1>
+          <h1>Drink Meister</h1>
           <nav>
             <Link to="/">トップページ</Link>
             <Link to="/form">投稿フォーム</Link>
