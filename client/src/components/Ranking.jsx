@@ -30,7 +30,7 @@ export default function PostList() {
               ? new Date(data.createdAt.seconds * 1000).toLocaleString()
               : "不明",
             text: Array.isArray(data.text)
-              ? data.text.join("、")
+              ? data.text.join("×")
               : data.text ?? "",
           };
         })
