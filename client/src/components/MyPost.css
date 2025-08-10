@@ -18,6 +18,7 @@
   margin-left: 20px;
   margin-right: 20px;
   overflow: hidden;
+  background-color: #F5F7E9;
 }
 
 .post-item .delete-btn {
@@ -55,3 +56,4 @@
 .your-post{
     font-size: 35px;
 }
+

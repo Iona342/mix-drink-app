@@ -12,6 +12,10 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsDown } from "@fortawesome/free-solid-svg-icons";
 import { faThumbsDown as farThumbsDown } from "@fortawesome/free-regular-svg-icons";
+import { faThumbsUp as fasThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import { faThumbsUp as farThumbsUp } from "@fortawesome/free-regular-svg-icons";
+
+import "./TopPage.css";
 
 export default function TopPage() {
   const [posts, setPosts] = useState([]);
@@ -106,12 +110,14 @@ export default function TopPage() {
   return (
     <div>
       <h2>最近の投稿</h2>
+      <div className="results">
       {posts.map((post) => {
         const hasLiked = likedPosts.includes(post.id);
         const hasBad = badPosts.includes(post.id);
 
         return (
           <div
+            className="post-item"
             key={post.id}
             style={{
               border: "1px solid #ccc",
@@ -136,18 +142,28 @@ export default function TopPage() {
               </div>
             )}
             <div style={{ marginTop: "8px" }}>
-              <button onClick={() => handleLikeToggle(post.id)}>
-                {hasLiked ? "❤" : "♡"}
+              <button
+                className="like-btn"
+                onClick={() => handleLikeToggle(post.id)}
+              >
+                {hasLiked ? (
+                  <FontAwesomeIcon icon={fasThumbsUp} className="good-push"/>
+                ) : (
+                  <FontAwesomeIcon icon={farThumbsUp} />
+                )}
               </button>
               <span style={{ marginLeft: "8px", marginRight: "16px" }}>
                 {post.likes || 0}
               </span>
 
-              <button onClick={() => handleBadToggle(post.id)}>
+              <button
+                className="bad-btn"
+                onClick={() => handleBadToggle(post.id)}
+              >
                 {hasBad ? (
                   <FontAwesomeIcon
                     icon={faThumbsDown}
-                    style={{ color: "black" }}
+                    className="bad-push"
                   />
                 ) : (
                   <FontAwesomeIcon
@@ -161,6 +177,7 @@ export default function TopPage() {
           </div>
         );
       })}
+      </div>
     </div>
   );
 }
