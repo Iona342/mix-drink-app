@@ -109,6 +109,12 @@ export default function TopPage() {
 
   return (
     <div>
+      <div className="top-description">
+        <h2>Drink Meisterへようこそ！</h2>
+        <p>オリジナルのドリンクの組み合わせと感想を投稿したり、他の人のドリンクを検索することができます。</p>
+        <p>新しいドリンクの発見や、自分だけの特別な一杯を見つけましょう！</p>
+      </div>
+
       <h2>最近の投稿</h2>
       <div className="results">
       {posts.map((post) => {

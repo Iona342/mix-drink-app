@@ -71,3 +71,18 @@
 .third-place {
   background: linear-gradient(90deg, #cd7f32, #f5f5dc);
 }
+
+.text {
+  font-size: 24px;
+  color: #0091ff;
+  margin-top: 4px;
+}
+
+.like,
+.bad {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: #555;
+  margin-right: 12px;
+}
